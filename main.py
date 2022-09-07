@@ -1,7 +1,16 @@
 import hikari
 import lightbulb
-bot = lightbulb.BotApp(token='',
-                       default_enabled_guilds=())
+
+
+file = open(r"C:\projectz\botdata.txt", "r")
+bot_start_raw_data = file.read()
+print(bot_start_raw_data)
+bot_start_data = bot_start_raw_data.split('\n')
+print(bot_start_data)
+bot_token = bot_start_data[1]
+guild = int(bot_start_data[0])
+bot = lightbulb.BotApp(token=bot_token,
+                       default_enabled_guilds=(guild))
 
 
 @bot.listen(hikari.StartedEvent)
@@ -23,16 +32,16 @@ async def group(ctx):
 @group.child
 @lightbulb.command('subcommand', 'the subcommand')
 @lightbulb.implements(lightbulb.SlashSubCommand)
-async def (ctx):
+async def subcommand(ctx):
     ctx.respond('yeah, this is a sub command')
 
 @bot.command
- @lightbulb.option('numm1', 'the first number', type=int)
- @lightbulb.option('numm2', 'the second number', type=int)
- @lightbulb.command('addd', 'add 2 options together')
-  @lightbulb.implements(lightbulb.SlashCommand)
-  async def addd(ctx):
-     await ctx.respond(ctx.options.numm1 + ctx.options.numm2)
+@lightbulb.option('numm1', 'the first number', type=int)
+@lightbulb.option('numm2', 'the second number', type=int)
+@lightbulb.command('addd', 'add 2 options together')
+@lightbulb.implements(lightbulb.SlashCommand)
+async def addd(ctx):
+    await ctx.respond(ctx.options.numm1 + ctx.options.numm2)
 
 
 bot.run()
